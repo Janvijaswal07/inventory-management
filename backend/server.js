@@ -6,7 +6,7 @@ const bodyParse = require("body-parser");
 const userRoutes = require("./routers/userRoutes");
 const errorHandler = require('./middleware/errorMiddleware')
 
-const app = express();
+const app = express()
 
 //middlewares
 app.use(express.json());
