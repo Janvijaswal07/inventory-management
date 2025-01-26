@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const bcrypy = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 
 // generate token
 const generateToken = (id) => {
@@ -80,7 +80,7 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error("User is not exist, please signup first");
   }
   // check password is correct
-  const passwordValidation = await bcrypy.compare(password, user.password);
+  const passwordValidation = await bcrypt.compare(password, user.password);
 
   //generate token
   const token = generateToken(user._id);
@@ -149,18 +149,82 @@ const loginStatus = asyncHandler(async (req, res) => {
     res.json(false);
   }
   const verified = jwt.verify(token, process.env.JWT_SECRET);
-  
+
   if (verified) {
     res.json(true);
-  }
-  else{
+  } else {
     res.json(false);
   }
 });
 
 // update user
-const updateUser = asyncHandler( async (req, res)=>{
-  res.send('hi')
-})
+const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (user) {
+    const { name, email, phone, photo, bio } = user;
 
-module.exports = { registerUser, loginUser, logout, getUser, loginStatus, updateUser };
+    user.name = req.body.name || name;
+    user.email = email;
+    user.phone = req.body.phone || phone;
+    user.photo = req.body.photo || photo;
+    user.bio = req.body.bio || bio;
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      phone: updatedUser.phone,
+      photo: updatedUser.photo,
+      bio: updatedUser.bio,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User is not found");
+  }
+});
+
+// update password
+
+const changePassword = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const { oldPassword, password } = req.body;
+
+  if (!user) {
+    res.status(400);
+    throw new Error("User is not found, Please login first");
+  }
+
+  // validate
+  if (!password || !oldPassword) {
+    res.status(400);
+    throw new Error("Please add oldpassword and new password");
+  }
+
+  // if oldpassword is matches to mongoDB password
+  const passwordIsCorrect = await bcrypt.compare(oldPassword, user.password);
+  if(!passwordIsCorrect){
+    res.status(400);
+    throw new Error("your old password is wrong, please enter the rigth password");
+  }
+  // Save new password
+  if (user && passwordIsCorrect) {
+    user.password = password;
+    await user.save();
+    res.status(200).send("Password change successfully");
+  } else {
+    res.status(400);
+    throw new Error("Please add old and new passowrd");
+  }
+});
+
+module.exports = {
+  registerUser,
+  loginUser,
+  logout,
+  getUser,
+  loginStatus,
+  updateUser,
+  changePassword,
+};
