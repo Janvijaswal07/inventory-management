@@ -107,4 +107,39 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid email or password");
   }
 });
-module.exports = { registerUser, loginUser };
+
+const logout = asyncHandler(async (req, res) => {
+  res.cookie("token", "", {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(0),
+    sameSite: "none",
+    secure: true,
+  });
+  return res.status(200).json({ message: "Sucessfully logged out" });
+});
+
+const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (user) {
+    const { _id, name, email, phone, photo, bio } = user;
+    res.status(200).json({
+      _id,
+      name,
+      email,
+      phone,
+      photo,
+      bio,
+    });
+  } else {
+    res.status(400);
+    throw new Error("User not found");
+  }
+});
+
+//  Get Login Status
+const loginStatus = asyncHandler(async (req, res) => {
+res.send("hi")
+});
+
+module.exports = { registerUser, loginUser, logout, getUser, loginStatus };
