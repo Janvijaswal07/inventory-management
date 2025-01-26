@@ -3,10 +3,12 @@ const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypy = require("bcryptjs");
 
+// generate token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
+// register user
 const registerUser = asyncHandler(async (req, res) => {
   //validation
   const { name, email, password } = req.body;
@@ -62,6 +64,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+// login user
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   //valodation
@@ -108,6 +111,7 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+//logut user
 const logout = asyncHandler(async (req, res) => {
   res.cookie("token", "", {
     path: "/",
@@ -119,6 +123,7 @@ const logout = asyncHandler(async (req, res) => {
   return res.status(200).json({ message: "Sucessfully logged out" });
 });
 
+// get user data
 const getUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   if (user) {
@@ -139,7 +144,23 @@ const getUser = asyncHandler(async (req, res) => {
 
 //  Get Login Status
 const loginStatus = asyncHandler(async (req, res) => {
-res.send("hi")
+  const token = req.cookies.token;
+  if (!token) {
+    res.json(false);
+  }
+  const verified = jwt.verify(token, process.env.JWT_SECRET);
+  
+  if (verified) {
+    res.json(true);
+  }
+  else{
+    res.json(false);
+  }
 });
 
-module.exports = { registerUser, loginUser, logout, getUser, loginStatus };
+// update user
+const updateUser = asyncHandler( async (req, res)=>{
+  res.send('hi')
+})
+
+module.exports = { registerUser, loginUser, logout, getUser, loginStatus, updateUser };
