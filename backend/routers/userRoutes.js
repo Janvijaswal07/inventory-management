@@ -10,5 +10,6 @@ router.route("/getUser").get(protect, userControllers.getUser);
 router.route("/loggedin").get(userControllers.loginStatus);
 router.route("/updateuser").patch(protect, userControllers.updateUser);
 router.route("/changepassword").patch(protect, userControllers.changePassword);
+router.route("/forgotpassword").get(userControllers.forgotPassword);
 
 module.exports = router;
