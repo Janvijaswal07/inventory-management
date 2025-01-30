@@ -204,9 +204,11 @@ const changePassword = asyncHandler(async (req, res) => {
 
   // if oldpassword is matches to mongoDB password
   const passwordIsCorrect = await bcrypt.compare(oldPassword, user.password);
-  if(!passwordIsCorrect){
+  if (!passwordIsCorrect) {
     res.status(400);
-    throw new Error("your old password is wrong, please enter the rigth password");
+    throw new Error(
+      "your old password is wrong, please enter the rigth password"
+    );
   }
   // Save new password
   if (user && passwordIsCorrect) {
@@ -219,6 +221,11 @@ const changePassword = asyncHandler(async (req, res) => {
   }
 });
 
+//forgotpassword
+const forgotPassword = asyncHandler(async (req, res) => {
+  res.send("hi");
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -227,4 +234,5 @@ module.exports = {
   loginStatus,
   updateUser,
   changePassword,
+  forgotPassword
 };
