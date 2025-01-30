@@ -3,6 +3,7 @@ const express = require("express");
 const connectDB = require("./config/db");
 const cors = require("cors");
 const bodyParse = require("body-parser");
+const cookieParser = require("cookie-parser");
 const userRoutes = require("./routers/userRoutes");
 const errorHandler = require('./middleware/errorMiddleware')
 
@@ -12,6 +13,7 @@ const app = express()
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParse.json());
+app.use(cookieParser());
 
 // routes middleware
 app.use("/api/", userRoutes);
