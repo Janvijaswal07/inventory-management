@@ -11,5 +11,8 @@ router.route("/loggedin").get(userControllers.loginStatus);
 router.route("/updateuser").patch(protect, userControllers.updateUser);
 router.route("/changepassword").patch(protect, userControllers.changePassword);
 router.route("/forgotpassword").post(userControllers.forgotPassword);
+router.route("/resetpassword/:resetToken").put(userControllers.resetPassword);
+
+
 
 module.exports = router;
