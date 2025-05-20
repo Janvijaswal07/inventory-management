@@ -145,7 +145,7 @@ const getUser = asyncHandler(async (req, res) => {
   }
 });
 
-//  Get Login Status
+//  Get Login Status 
 const loginStatus = asyncHandler(async (req, res) => {
   const token = req.cookies.token;
   if (!token) {
@@ -284,7 +284,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
 // reset password
 const resetPassword = asyncHandler(async (req, res) => {
-  const { passowrd } = req.body;
+  const { password } = req.body;
   const { resetToken } = req.params;
 
   // hash token, then compare  to Token in Db
@@ -306,7 +306,7 @@ const resetPassword = asyncHandler(async (req, res) => {
 
   // find user
   const user = await User.findOne({ _id: userToken.userId });
-  user.passowrd = passowrd;
+  user.password = password;
   await user.save();
   res.status(200);
   throw new Error("Password reset successfully, please login");

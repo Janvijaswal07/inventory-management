@@ -1,0 +1,9 @@
+.card {
+  border: 1px solid transparent;
+  border-radius: 5px;
+  box-shadow: var(--box-shadow);
+  padding: 16px; /* optional, adds spacing inside the card */
+  display: flex;
+  flex-direction: column;
+  height: auto; /* ensures height adjusts with content */
+}

@@ -1,0 +1,73 @@
+.add-product {
+    margin-bottom: 5rem;
+    display: flex;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 1rem;
+  
+    .card {
+      width: 100%;
+      max-width: 500px;
+      padding: 1rem;
+      height: 80vh; // Limit height of card
+      overflow-y: auto; // Enable scroll inside card
+      display: flex;
+      flex-direction: column;
+    }
+  
+    form {
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+  
+    label {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--color-dark);
+    }
+  
+    input[type="text"],
+    input[type="number"],
+    input[type="file"],
+    input[type="email"],
+    select,
+    input[type="password"],
+    textarea {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 300;
+      padding: 1rem;
+      margin: 1rem auto;
+      width: 100%;
+      border: 1px solid #777;
+      border-radius: 3px;
+      outline: none;
+    }
+  }
+  
+  .group {
+    border: 1px solid var(--dark-blue);
+    padding: 5px;
+    width: 100%;
+  }
+  
+  .image-preview {
+    width: 100%;
+    height: 100%;
+    max-height: 280px;
+    background: var(--dark-blue);
+    padding: 1rem;
+    border-radius: 3px;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  
+  .image-preview img {
+    width: 100%;
+  }
+  
+  .image-show {
+    display: block;
+  }
+  

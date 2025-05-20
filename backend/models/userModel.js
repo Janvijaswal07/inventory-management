@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add a photo"],
       default:
-        "https://images.pexels.com/photos/943084/pexels-photo-943084.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5jifLXKb2qo_5aXh54USNlvxI34oPpG3zTw&s",
     },
    
     phone: {

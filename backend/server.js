@@ -5,20 +5,33 @@ const cors = require("cors");
 const bodyParse = require("body-parser");
 const cookieParser = require("cookie-parser");
 const userRoutes = require("./routers/userRoutes");
+const productRoutes = require("./routers/productRoute");
+const contactRoute = require("./routers/contactRoute");
 const errorHandler = require('./middleware/errorMiddleware')
+const path = require("path");
+
 
 const app = express()
 
 //middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json()); // For parsing JSON payloads
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParse.json());
 app.use(cookieParser());
+  app.use(
+    cors({
+      origin: ["http://localhost:3000", "https://pinvent-app.vercel.app"],
+      credentials: true,
+    })
+  );
+  app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // routes middleware
-app.use("/api/", userRoutes);
+app.use("/api/auth/", userRoutes);
+app.use("/api/product/", productRoutes);
+  app.use("/api/contactus", contactRoute);
 
-const Port = process.env.Port || 5000;
+const Port = process.env.Port || 6000;
 
 //error middleware
 app.use(errorHandler);
